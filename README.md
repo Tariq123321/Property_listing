@@ -16,13 +16,12 @@ Welcome to the backend repository, a state-of-the-art property listing and manag
 ## Features
 
 ### User Registration and Login
-- **Secure Authentication**: Biometric login (fingerprint/face recognition) and multi-factor authentication (MFA).
+- **Secure Authentication**: mMulti-factor authentication (MFA).
 - **Authorization**: Role-based access control for different types of users.
 
 ### Property Listing
 - **AI-Driven Form**: Advanced form for users to list properties with details such as location, price, amenities, photos, etc.
 - **Editing and Deleting Listings**: Option for users to edit or delete their listings.
-- **AR Integration**: Augmented Reality feature to visualize property settings and room configurations.
 
 ### Search and Filter
 - **AI-Powered Search**: Advanced search functionality with filters like location, price range, type of property, etc.
@@ -32,19 +31,13 @@ Welcome to the backend repository, a state-of-the-art property listing and manag
 - **Detailed View**: High-resolution photos, 360-degree virtual tours, and video walkthroughs.
 - **Interactive Map**: Integration showing the property location with neighborhood insights and amenities.
 
-### Booking System
-- **Secure Transactions**: Blockchain-based secure transaction management.
-- **Calendar Integration**: Real-time availability display.
-
 ## Technology Stack
 
 - **Programming Language**: Node.js, TypeScript
 - **Framework**: Express.js
-- **Database**: PostgreSQL, MongoDB
-- **Authentication**: JWT, OAuth2, Biometric authentication
+- **Database**: PostgreSQL, NoSQL, MongoDB
+- **Authentication**: JWT, OAuth2
 - **Storage**: AWS S3 for image and video storage
-- **AR Integration**: ARKit, ARCore
-- **Blockchain**: Ethereum, Solidity for smart contracts
 
 ## Installation
 
@@ -52,13 +45,12 @@ Welcome to the backend repository, a state-of-the-art property listing and manag
 
 - Node.js v14.x or higher
 - PostgreSQL
+- NoSQL
 - MongoDB
-- AWS account for S3 storage
-- Ethereum node for blockchain transactions
 
 ### Steps
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/InstaNest-backend.git
-   cd InstaNest-backend
+   git clone https://github.com/Tariq123321/Property_listing.git
+   cd Property_listing
