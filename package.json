@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Welcome to the backend repository, a state-of-the-art property listing and management system. This system revolutionizes how users list properties, manage bookings, and interact with potential tenants, setting a new benchmark in the Indian market.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
