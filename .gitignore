@@ -64,6 +64,3 @@ dist/
 build/
 public/
 uploads/
-
-# Ignore Figma design files
-*.fig
