@@ -15,13 +15,12 @@ const PORT = process.env.APPPORT_ || 3000;
 app.use(express.json());
 app.use(cors());
 
-app.use("/api/v1", mainRouter);
+// Test route
+router.get('/test', (req, res) => {
+  res.status(200).json({ message: "Server is running fine!" });
+});
 
-// app.post("/checking",async function(req,res){
-//   const userCreated =await Child.create(req.body);
-//   console.log(userCreated);
-//   return res.send({userCreated})
-// })
+app.use("/api/v1", mainRouter);
 
 app.listen(PORT, async () => {
 	await connetToDatabase();
