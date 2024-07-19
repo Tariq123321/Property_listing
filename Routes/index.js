@@ -7,6 +7,5 @@ const mainRouter = express.Router();
 
 mainRouter.use("/user", userRouter);
 mainRouter.use("/properties", propertyRouter);
-mainRouter.use("/api/bookings", bookingRoutes);
 
 module.exports = mainRouter;
