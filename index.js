@@ -16,7 +16,8 @@ app.use(express.json());
 app.use(cors());
 
 // Test route
-router.get('/test', (req, res) => {
+app.get('/test', (req, res) => {
+  console.log("server is running fine!");
   res.status(200).json({ message: "Server is running fine!" });
 });
 
