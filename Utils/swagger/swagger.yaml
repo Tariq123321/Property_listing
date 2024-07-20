@@ -1,0 +1,378 @@
+openapi: 3.0.0
+info:
+  title: Property Listing API
+  description: API for managing properties and users
+  version: 1.0.0
+servers:
+  - url: "http://localhost:3000/api/v1"
+    description: Local server
+  - url: "https://property-listing-ns44.onrender.com/api/v1"
+    description: development server
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Property:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier of the property.
+          example: '60b8d295f0b7d33b2c7e0d46'
+        owner:
+          type: string
+          description: The ID of the user who owns the property.
+          example: '60b8d295f0b7d33b2c7e0d45'
+        title:
+          type: string
+          description: The title of the property.
+          example: 'Spacious 2 BHK Apartment'
+        description:
+          type: string
+          description: A detailed description of the property.
+          example: 'A beautiful 2 BHK apartment located in the city center with modern amenities.'
+        location:
+          type: string
+          description: The location of the property.
+          example: 'New York, NY'
+        price:
+          type: number
+          format: float
+          description: The price of the property.
+          example: 1500.00
+        amenities:
+          type: array
+          items:
+            type: string
+          description: A list of amenities available in the property.
+          example: ['Air Conditioning', 'Gym', 'Parking']
+        photos:
+          type: array
+          items:
+            type: string
+          description: A list of URLs to photos of the property.
+          example: ['http://example.com/photo1.jpg', 'http://example.com/photo2.jpg']
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time when the property was created.
+          example: '2024-07-21T12:34:56Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time when the property was last updated.
+          example: '2024-07-21T12:34:56Z'
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier of the user.
+          example: '60b8d295f0b7d33b2c7e0d46'
+        name:
+          type: string
+          description: The name of the user.
+          example: 'John Doe'
+        email:
+          type: string
+          description: The email of the user.
+          example: 'john.doe@example.com'
+        phone:
+          type: string
+          description: The phone number of the user.
+          example: '1234567890'
+        photo:
+          type: string
+          description: URL of the user's profile photo.
+          example: 'http://example.com/profile.jpg'
+        role:
+          type: string
+          description: The role of the user.
+          example: 'admin'
+        isVerified:
+          type: boolean
+          description: Whether the user has verified their email.
+          example: true
+        otp:
+          type: string
+          description: OTP used for verification.
+          example: '123456'
+        passwordChangedAt:
+          type: string
+          format: date-time
+          description: The date and time when the password was last changed.
+          example: '2024-07-21T12:34:56Z'
+        passwordResetToken:
+          type: string
+          description: The token used for password reset.
+          example: 'resetToken123'
+        passwordResetExpires:
+          type: string
+          format: date-time
+          description: The expiration date and time for the password reset token.
+          example: '2024-07-22T12:34:56Z'
+        active:
+          type: boolean
+          description: Whether the user account is active.
+          example: true
+        verificationToken:
+          type: string
+          description: The token used for email verification.
+          example: 'verificationToken123'
+
+paths:
+  /properties:
+    get:
+      summary: Retrieve all properties
+      tags:
+        - Properties
+      responses:
+        "200":
+          description: List of properties
+    post:
+      summary: Create a new property listing
+      description: Adds a new property listing to the database.
+      tags:
+        - Properties
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner:
+                  type: string
+                  description: The ID of the user who owns the property.
+                  example: "60b8d295f0b7d33b2c7e0d45"
+                title:
+                  type: string
+                  description: The title of the property.
+                  example: "Spacious 2 BHK Apartment"
+                description:
+                  type: string
+                  description: A detailed description of the property.
+                  example: "A beautiful 2 BHK apartment located in the city center with modern amenities."
+                location:
+                  type: string
+                  description: The location of the property.
+                  example: "New York, NY"
+                price:
+                  type: number
+                  format: float
+                  description: The price of the property.
+                  example: 1500.00
+                amenities:
+                  type: array
+                  items:
+                    type: string
+                  description: A list of amenities available in the property.
+                  example: ["Air Conditioning", "Gym", "Parking"]
+                photos:
+                  type: array
+                  items:
+                    type: string
+                  description: A list of URLs to photos of the property.
+                  example:
+                    [
+                      "http://example.com/photo1.jpg",
+                      "http://example.com/photo2.jpg",
+                    ]
+              required:
+                - owner
+                - title
+                - description
+                - location
+                - price
+      responses:
+        "201":
+          description: Property created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    description: The unique identifier of the property.
+                    example: "60b8d295f0b7d33b2c7e0d46"
+                  owner:
+                    type: string
+                    description: The ID of the user who owns the property.
+                    example: "60b8d295f0b7d33b2c7e0d45"
+                  title:
+                    type: string
+                    description: The title of the property.
+                    example: "Spacious 2 BHK Apartment"
+                  description:
+                    type: string
+                    description: A detailed description of the property.
+                    example: "A beautiful 2 BHK apartment located in the city center with modern amenities."
+                  location:
+                    type: string
+                    description: The location of the property.
+                    example: "New York, NY"
+                  price:
+                    type: number
+                    format: float
+                    description: The price of the property.
+                    example: 1500.00
+                  amenities:
+                    type: array
+                    items:
+                      type: string
+                    description: A list of amenities available in the property.
+                    example: ["Air Conditioning", "Gym", "Parking"]
+                  photos:
+                    type: array
+                    items:
+                      type: string
+                    description: A list of URLs to photos of the property.
+                    example:
+                      [
+                        "http://example.com/photo1.jpg",
+                        "http://example.com/photo2.jpg",
+                      ]
+                  createdAt:
+                    type: string
+                    format: date-time
+                    description: The date and time when the property was created.
+                    example: "2024-07-21T12:34:56Z"
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    description: The date and time when the property was last updated.
+                    example: "2024-07-21T12:34:56Z"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+                    example: "Internal server error"
+  /properties/{id}:
+    get:
+      summary: Retrieve a property by ID
+      tags:
+        - Properties
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The property ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Property details
+    put:
+      summary: Update a property
+      tags:
+        - Properties
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The property ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Property updated
+    delete:
+      summary: Delete a property
+      tags:
+        - Properties
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The property ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Property deleted
+  /user/signup:
+    post:
+      summary: Sign up a new user
+      tags:
+        - Users
+      responses:
+        "201":
+          description: User signed up
+  /user/signin:
+    post:
+      summary: Sign in a user
+      tags:
+        - Users
+      responses:
+        "200":
+          description: User signed in
+  /user/email-verify:
+    put:
+      summary: Verify user email
+      tags:
+        - Users
+      responses:
+        "200":
+          description: Email verified
+  /user/forget-password:
+    post:
+      summary: Request password reset
+      tags:
+        - Users
+      responses:
+        "200":
+          description: Password reset requested
+  /user/reset-password:
+    put:
+      summary: Reset user password
+      tags:
+        - Users
+      responses:
+        "200":
+          description: Password reset
+  /user/update-password:
+    post:
+      summary: Update user password
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Password updated
+  /user/validate-otp:
+    post:
+      summary: Validate OTP
+      tags:
+        - Users
+      responses:
+        "200":
+          description: OTP validated
+  /user/me:
+    get:
+      summary: Get current user profile
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: User profile
+
+security:
+  - BearerAuth: []
