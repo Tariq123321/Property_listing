@@ -24,6 +24,12 @@ const PORT = process.env.APPPORT_ || 3000;
 app.use(express.json());
 app.use(cors());
 
+// Test route
+app.get("/test", (req, res) => {
+  successLogger.http("server is running fine!");
+  res.status(200).json({ message: "Server is running fine!" });
+});
+
 app.use("/api/v1", mainRouter);
 
 app.listen(PORT, async () => {
