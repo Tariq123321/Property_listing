@@ -23,7 +23,7 @@ exports.getPropertyDetails = async (req, res) => {
       warnLogger.warn("Property is not in the DB");
       return res.status(404).json({ error: "Property not found" });
     }
-    successLogger.http("property updated successfully");
+    successLogger.http("property retrieved successfully");
     res.status(200).json(property);
   } catch (error) {
     errorLogger.error("Internal error", error);
@@ -67,7 +67,7 @@ exports.deleteProperty = async (req, res) => {
   try {
     const property = await Property.findByIdAndDelete(req.params.id);
     if (!property) {
-      warnLogger.warn("Property is not in the DB");
+      warnLogger.warn("Property is not found");
       return res.status(404).json({ error: "Property not found" });
     }
     successLogger.http("property deleted successfully");
