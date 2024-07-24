@@ -1,0 +1,417 @@
+openapi: 3.0.0
+info:
+  title: UrbanNest APIs
+  description: These APIs provide endpoints for managing properties, user accounts, the admin dashboard, and booking of UrbanNest. It supports user registration, authentication, and role-based access control. APIs are secured using JWT-based authentication.
+  version: 1.0.0
+servers:
+  - url: "http://localhost:3000/api/v1"
+    description: Local server
+  - url: "https://property-listing-d0ic.onrender.com/api/v1"
+    description: Development server
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Property:
+      type: object
+      properties:
+        title:
+          type: string
+          description: The title of the property.
+          example: 'Spacious 2 BHK Apartment'
+        description:
+          type: string
+          description: A detailed description of the property.
+          example: 'A beautiful 2 BHK apartment located in the city center with modern amenities.'
+        location:
+          type: string
+          description: The location of the property.
+          example: 'New York, NY'
+        price:
+          type: number
+          format: float
+          description: The price of the property.
+          example: 1500.00
+        amenities:
+          type: array
+          items:
+            type: string
+          description: A list of amenities available in the property.
+          example: ['Air Conditioning', 'Gym', 'Parking']
+        photos:
+          type: array
+          items:
+            type: string
+          description: A list of URLs to photos of the property.
+          example: ['http://example.com/photo1.jpg', 'http://example.com/photo2.jpg']
+        bhk:
+          type: string
+          description: The BHK of th property
+          example: 3BHK
+        area:
+          type: string
+          description: The area of the property
+          example: 3*3 m^2
+        popular:
+          type: boolean
+          description: The popularity of the property
+          example: false
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time when the property was created.
+          example: '2024-07-21T12:34:56Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time when the property was last updated.
+          example: '2024-07-21T12:34:56Z'
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the user.
+          example: 'John Doe'
+        email:
+          type: string
+          description: The email of the user.
+          example: 'john.doe@example.com'
+        phone:
+          type: string
+          description: The phone number of the user.
+          example: '1234567890'
+        role:
+          type: string
+          enum: ['user', 'admin']
+          description: The role of the user.
+          example: 'user'
+        photo:
+          type: string
+          description: The URL to the user's photo.
+          example: 'http://example.com/photo.jpg'
+        isVerified:
+          type: boolean
+          description: Whether the user's email is verified.
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time when the user was created.
+          example: '2024-07-21T12:34:56Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time when the user was last updated.
+          example: '2024-07-21T12:34:56Z'
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Error status.
+          example: 'fail'
+        message:
+          type: string
+          description: Error message.
+          example: 'Internal server error!'
+paths:
+  /properties:
+    get:
+      summary: Retrieve all properties
+      tags:
+        - Properties
+      responses:
+        "200":
+          description: List of properties
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Property'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a new property listing
+      description: Adds a new property listing to the database.
+      tags:
+        - Properties
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Property'
+      responses:
+        "201":
+          description: Property created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /properties/{id}:
+    get:
+      summary: Retrieve a property by ID
+      tags:
+        - Properties
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The property ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Property details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property'
+        "404":
+          description: Property not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update a property
+      tags:
+        - Properties
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The property ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Property'
+      responses:
+        "200":
+          description: Property updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property'
+        "404":
+          description: Property not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete a property
+      tags:
+        - Properties
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The property ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Property deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Property deleted successfully"
+        "404":
+          description: Property not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /user/signup:
+    post:
+      summary: User signup
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: 'John Doe'
+                email:
+                  type: string
+                  example: 'rasheedtariq935@gmail.com'
+                password:
+                  type: string
+                  example: 'password123'
+                confirmPassword:
+                  type: string
+                  example: 'password123'
+                role:
+                  type: string
+                  example: 'user'
+                phone:
+                  type: string
+                  example: '7780936392'
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /user/signin:
+    post:
+      summary: User signin
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                identifier:
+                  type: string
+                  example: 'rasheedtariq935@gmail.com'
+                password:
+                  type: string
+                  example: 'password123'
+      responses:
+        "200":
+          description: User signed in successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /user/email-verify:
+    post:
+      summary: Verify email
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  example: 'email verification token'
+      responses:
+        "200":
+          description: Email verified successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Email verified successfully"
+        "400":
+          description: Invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /user/reset-password:
+    post:
+      summary: Reset password
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  example: 'reset token'
+                password:
+                  type: string
+                  example: 'newpassword123'
+                confirmPassword:
+                  type: string
+                  example: 'newpassword123'
+      responses:
+        "200":
+          description: Password reset successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Password reset successfully"
+        "400":
+          description: Invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'

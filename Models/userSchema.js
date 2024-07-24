@@ -79,7 +79,6 @@ const userSchema = new mongoose.Schema({
   }
 )
 
-
 userSchema.pre('save', function (next) {
   if (this.isNew) { 
     this.verificationToken = crypto.randomBytes(16).toString('hex');
@@ -93,12 +92,6 @@ userSchema.pre('save', async function(next){
   this.confirmPassword = undefined
   next();
 });
-
-
-
-
-
-
 
 const User = mongoose.model("User",userSchema);
 

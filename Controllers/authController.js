@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { createSendToken } = require("../Utils/generatingToken");
 const { generateOTP, createAndSendOTP } = require("../Utils/twillio.config");
+const infoLogger = require("../logger/infoLogger");
 
 const signup = async (req, res) => {
   try {
@@ -35,6 +36,7 @@ const signup = async (req, res) => {
 
     const url = `${req.protocol}//:${req.get("host")}/me`;
     const sendMail = new Email(user, url);
+    infoLogger.info(sendMail);
     sendMail.sendEmailVerification();
 
     req.message = "Verification link has been sent to email. Kindly verify!";
@@ -71,13 +73,11 @@ const emailVerfify = async (req, res) => {
 
 const signin = async (req, res) => {
   try {
-    const { email, password, phone, identifier } = req.body;
+    const { password, identifier } = req.body;
 
     const isEmail = identifier.includes("@");
     const query = isEmail ? { email: identifier } : { phone: identifier };
     console.log(query);
-    // const user = await User.findOne({ $or:[{email},{phone}] }).select("+password");;
-    // ! or :- same
     const user = await User.findOne(query).select("+password");
 
     if (!user) {
@@ -153,15 +153,7 @@ const protect = async (req, res, next) => {
         message: "User not exist",
       });
     }
-
-    // 4) Check if user changed password after the token was issued,  check the password ,  after getting the token is same or has been Changed for this we will send the password as a payload in the token
-    // if(userExists.checkingChangePasswordAfter(decoded.iat)){
-    //   return res.status(401).json({
-    //     status:"fail",
-    //     message:"password has been changed please login again"
-    //   })
-    // }
-
+    
     req.user = userExists;
 
     next();
@@ -324,11 +316,6 @@ const validateOtp = async (req, res) => {
     return res.send({ message: error.message });
   }
 };
-
-
-
-
-
 
 const getMe = async (req,res)=>{
   const user = await User.findById(req.user);

@@ -12,6 +12,7 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "chalk": "^5.3.0",
+    "colors": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
@@ -23,7 +24,16 @@
     "nodemon": "^3.1.4",
     "path": "^0.12.7",
     "pug": "^3.0.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "twilio": "^5.2.2",
-    "validator": "^13.12.0"
+    "validator": "^13.12.0",
+    "winston": "^3.13.1",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "console-error": "^0.0.4",
+    "console-info": "^0.0.5",
+    "console-warn": "^0.0.4"
   }
 }
