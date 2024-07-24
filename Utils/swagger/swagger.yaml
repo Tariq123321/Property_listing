@@ -6,7 +6,7 @@ info:
 servers:
   - url: "http://localhost:3000/api/v1"
     description: Local server
-  - url: "https://property-listing-ns44.onrender.com/api/v1"
+  - url: "https://property-listing-d0ic.onrender.com/api/v1"
     description: Development server
 
 components:
@@ -19,10 +19,6 @@ components:
     Property:
       type: object
       properties:
-        owner:
-          type: string
-          description: The ID of the user who owns the property.
-          example: '60b8d295f0b7d33b2c7e0d45'
         title:
           type: string
           description: The title of the property.
@@ -52,6 +48,18 @@ components:
             type: string
           description: A list of URLs to photos of the property.
           example: ['http://example.com/photo1.jpg', 'http://example.com/photo2.jpg']
+        bhk:
+          type: string
+          description: The BHK of th property
+          example: 3BHK
+        area:
+          type: string
+          description: The area of the property
+          example: 3*3 m^2
+        popular:
+          type: boolean
+          description: The popularity of the property
+          example: false
         createdAt:
           type: string
           format: date-time

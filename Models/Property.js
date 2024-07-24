@@ -1,18 +1,45 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const PropertySchema = new Schema({
+// Define the address sub-schema
+const AddressSchema = new Schema({
+  apartment: { type: String, required: true },
+  area: { type: String, required: true },
+  flatOrRoom_no: { type: String, required: true },
+  landmark: { type: String, required: true },
+  pincode: { type: String, required: true },
+  sector: { type: String, required: true },
+  state: { type: String, required: true },
+  street: { type: String, required: true },
+  townCity: { type: String, required: true },
+});
+
+// Define the property schema
+const PropertySchema = new Schema(
+  {
     title: { type: String, required: true },
     description: { type: String, required: true },
-    location: { type: String, required: true },
-    bhk:{type:String, required: true},
-    area: {type:String, required: true},
+    address: { type: AddressSchema, required: true }, // Use the address sub-schema
+    type: { type: String, enum: ["Room/Flat", "PG"], required: true },
+    accommodationType: {
+      type: String,
+      enum: ["Girls", "Boys", "Both"],
+      required: true,
+    },
+    bhk: { type: Number, required: true },
+    area: { type: String, required: true },
     price: { type: Number, required: true },
     amenities: [String],
-    photos: [String],
-    popular:{type: Boolean}
-}, { timestamps: true });
+    images: [String],
+    VRimages: [String],
+    popular: { type: Boolean },
+    occupancy: [String],
+    services: [String],
+    menu: [String],
+  },
+  { timestamps: true }
+);
 
-const PropertyModel = mongoose.model('Property', PropertySchema);
+const Property = mongoose.model("Property", PropertySchema);
 
-module.exports = PropertyModel;
+module.exports = Property;
