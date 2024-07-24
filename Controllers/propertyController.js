@@ -1,4 +1,4 @@
-const Property = require("../models/Property");
+const Property = require("../Models/Property");
 const errorLogger = require("../logger/errorLogger");
 const successLogger = require("../logger/successLogger");
 const warnLogger = require("../logger/warnLogger");
