@@ -23,7 +23,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Test route
 app.get('/test', (req, res) => {
-  successLogger.http("server is running fine!");
+  console.log("server is running fine!");
   res.status(200).json({ message: "Server is running fine!" });
 });
 
