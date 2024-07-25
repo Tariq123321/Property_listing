@@ -14,6 +14,18 @@ const AddressSchema = new Schema({
   townCity: { type: String, required: true },
 });
 
+const mealSchema = new Schema({
+  breakfast: { type: [String], default: [""] },
+  lunch: { type: [String], default: [""] },
+  evening: { type: [String], default: [""] },
+  dinner: { type: [String], default: [""] },
+});
+
+const menuSchema = new Schema({
+  day: { type: String, required: true },
+  meals: mealSchema,
+});
+
 // Define the property schema
 const PropertySchema = new Schema(
   {
@@ -35,7 +47,7 @@ const PropertySchema = new Schema(
     popular: { type: Boolean },
     occupancy: [String],
     services: [String],
-    menu: [String],
+    menu: [menuSchema],
   },
   { timestamps: true }
 );

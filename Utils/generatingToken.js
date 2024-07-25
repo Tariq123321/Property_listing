@@ -1,12 +1,12 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
 
-const generateToken = (id)=>{
-  return jwt.sign({id},process.env.JWT_SECRET,{expiresIn:"10d"})
+const generateToken = (id, role)=>{
+  return jwt.sign({id, role},process.env.JWT_SECRET,{expiresIn:"10d"})
 };
 
 const createSendToken = (user,statusCode , res,req)=>{
-  const token = generateToken(user.id);
+  const token = generateToken(user.id, user.role);
   const cookieOptions = {
     httpOnly : true,
     // secure : true ,
