@@ -68,7 +68,7 @@ const emailVerfify = async (req, res) => {
 
 const signin = async (req, res) => {
   try {
-    const { password, identifier } = req.body;
+    const { password, identifier, role } = req.body;
 
     const isEmail = identifier.includes("@");
     const query = isEmail ? { email: identifier } : { phone: identifier };
@@ -79,11 +79,16 @@ const signin = async (req, res) => {
       return res.status(400).send({ message: "Invalid email or password" });
     }
 
-    if (!user.isVerified) {
-      return res
-        .status(400)
-        .send({ message: "Please verify your email before logging in" });
+    // Check if the role matches
+    if (user.role !== role) {
+      return res.status(403).send({ message: "Role mismatch" });
     }
+
+    // if (!user.isVerified) {
+    //   return res
+    //     .status(400)
+    //     .send({ message: "Please verify your email before logging in" });
+    // }
 
     if (!isEmail) {
       try {
