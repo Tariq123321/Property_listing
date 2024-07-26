@@ -10,7 +10,7 @@ const infoLogger = require("../logger/infoLogger");
 const signup = async (req, res) => {
   try {
     
-    const {email, phone} = req.body;
+    const { name, email, password, confirmPassword, role, phone} = req.body;
     let userExist = await User.findOne({
       $or: [{ email: email }, { phone: phone }],
     }).select("active");
@@ -24,7 +24,7 @@ const signup = async (req, res) => {
 
     //* Note:- bcrypt is done in the usermodel schema
     
-    const user = new User(req.body);
+    const user = await User.create(req.body);
 
     user.password = undefined; // Do not send the password to the client side
     user.active = undefined; // also do not send whether is active/nonactive
