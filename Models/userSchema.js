@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema({
       enum: ['user','admin'],
       default: 'user'
     },
+    address:{
+      type:String,
+      required: true,
+    },
     email:{
       type:String,
       required:[true , "Email cannot be blank"],
