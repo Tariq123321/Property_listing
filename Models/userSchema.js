@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema({
       required:[true , "Name field cannot be blank"],
       trim:true,
     },
+    address:{
+      type:String,
+      required: true,
+    },
     password:{
       type:String,
       required:[true , "Password cannot be blank"],
@@ -34,10 +38,6 @@ const userSchema = new mongoose.Schema({
       required: true,
       enum: ['user','admin', 'owner'],
       default: 'user'
-    },
-    address:{
-      type:String,
-      required: true,
     },
     email:{
       type:String,
