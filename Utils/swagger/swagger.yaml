@@ -9,273 +9,23 @@ servers:
   - url: "https://property-listing-d0ic.onrender.com/api/v1"
     description: Development server
 
-components:
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-  schemas:
-    Property:
-      type: object
-      properties:
-        title:
-          type: string
-          description: The title of the property.
-          example: 'Spacious 2 BHK Apartment'
-        description:
-          type: string
-          description: A detailed description of the property.
-          example: 'A beautiful 2 BHK apartment located in the city center with modern amenities.'
-        location:
-          type: string
-          description: The location of the property.
-          example: 'New York, NY'
-        price:
-          type: number
-          format: float
-          description: The price of the property.
-          example: 1500.00
-        amenities:
-          type: array
-          items:
-            type: string
-          description: A list of amenities available in the property.
-          example: ['Air Conditioning', 'Gym', 'Parking']
-        photos:
-          type: array
-          items:
-            type: string
-          description: A list of URLs to photos of the property.
-          example: ['http://example.com/photo1.jpg', 'http://example.com/photo2.jpg']
-        bhk:
-          type: string
-          description: The BHK of th property
-          example: 3BHK
-        area:
-          type: string
-          description: The area of the property
-          example: 3*3 m^2
-        popular:
-          type: boolean
-          description: The popularity of the property
-          example: false
-        createdAt:
-          type: string
-          format: date-time
-          description: The date and time when the property was created.
-          example: '2024-07-21T12:34:56Z'
-        updatedAt:
-          type: string
-          format: date-time
-          description: The date and time when the property was last updated.
-          example: '2024-07-21T12:34:56Z'
-    User:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the user.
-          example: 'John Doe'
-        email:
-          type: string
-          description: The email of the user.
-          example: 'john.doe@example.com'
-        phone:
-          type: string
-          description: The phone number of the user.
-          example: '1234567890'
-        role:
-          type: string
-          enum: ['user', 'admin']
-          description: The role of the user.
-          example: 'user'
-        photo:
-          type: string
-          description: The URL to the user's photo.
-          example: 'http://example.com/photo.jpg'
-        isVerified:
-          type: boolean
-          description: Whether the user's email is verified.
-          example: true
-        createdAt:
-          type: string
-          format: date-time
-          description: The date and time when the user was created.
-          example: '2024-07-21T12:34:56Z'
-        updatedAt:
-          type: string
-          format: date-time
-          description: The date and time when the user was last updated.
-          example: '2024-07-21T12:34:56Z'
-    Error:
-      type: object
-      properties:
-        status:
-          type: string
-          description: Error status.
-          example: 'fail'
-        message:
-          type: string
-          description: Error message.
-          example: 'Internal server error!'
+tags:
+  - name: Authentication
+    description: Endpoints related to user authentication
+  - name: User Management
+    description: Endpoints for managing user profiles
+  - name: Properties
+    description: Endpoints for managing property listings
+  - name: Admin
+    description: Endpoints for admin user and property management
+
 paths:
-  /properties:
-    get:
-      summary: Retrieve all properties
-      tags:
-        - Properties
-      responses:
-        "200":
-          description: List of properties
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Property'
-        "500":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+  /auth/signup:
     post:
-      summary: Create a new property listing
-      description: Adds a new property listing to the database.
       tags:
-        - Properties
-      security:
-        - BearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Property'
-      responses:
-        "201":
-          description: Property created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Property'
-        "500":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /properties/{id}:
-    get:
-      summary: Retrieve a property by ID
-      tags:
-        - Properties
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The property ID
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Property details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Property'
-        "404":
-          description: Property not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        "500":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    put:
-      summary: Update a property
-      tags:
-        - Properties
-      security:
-        - BearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The property ID
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Property'
-      responses:
-        "200":
-          description: Property updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Property'
-        "404":
-          description: Property not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        "500":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    delete:
-      summary: Delete a property
-      tags:
-        - Properties
-      security:
-        - BearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The property ID
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Property deleted
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Property deleted successfully"
-        "404":
-          description: Property not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        "500":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /user/signup:
-    post:
-      summary: User signup
-      tags:
-        - Users
+        - Authentication
+      summary: User Signup
+      description: Register a new user
       requestBody:
         required: true
         content:
@@ -285,40 +35,50 @@ paths:
               properties:
                 name:
                   type: string
-                  example: 'John Doe'
+                  example: John Doe
                 email:
                   type: string
-                  example: 'rasheedtariq935@gmail.com'
+                  example: johndoe@example.com
                 password:
                   type: string
-                  example: 'password123'
+                  example: Password123
                 confirmPassword:
                   type: string
-                  example: 'password123'
+                  example: Password123
                 role:
                   type: string
-                  example: 'user'
+                  example: user
                 phone:
                   type: string
-                  example: '7780936392'
+                  example: "1234567890"
       responses:
-        "201":
-          description: User created successfully
+        201:
+          description: User registered successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /user/signin:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  token:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: "#/components/schemas/User"
+        400:
+          description: Invalid input
+        401:
+          description: User already exists
+
+  /auth/signin:
     post:
-      summary: User signin
       tags:
-        - Users
+        - Authentication
+      summary: User Signin
+      description: Authenticate user and return JWT token
       requestBody:
         required: true
         content:
@@ -328,60 +88,64 @@ paths:
               properties:
                 identifier:
                   type: string
-                  example: 'rasheedtariq935@gmail.com'
+                  example: johndoe@example.com
                 password:
                   type: string
-                  example: 'password123'
-      responses:
-        "200":
-          description: User signed in successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        "400":
-          description: Invalid credentials
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /user/email-verify:
-    post:
-      summary: Verify email
-      tags:
-        - Users
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                token:
+                  example: Password123
+                role:
                   type: string
-                  example: 'email verification token'
+                  example: user
       responses:
-        "200":
-          description: Email verified successfully
+        200:
+          description: Authentication successful
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  message:
+                  status:
                     type: string
-                    example: "Email verified successfully"
-        "400":
-          description: Invalid or expired token
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /user/reset-password:
-    post:
-      summary: Reset password
+                  token:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: "#/components/schemas/User"
+        400:
+          description: Invalid email or password
+        403:
+          description: Role mismatch
+        404:
+          description: Invalid credentials
+
+  /auth/email-verify:
+    put:
       tags:
-        - Users
+        - Authentication
+      summary: Email Verification
+      description: Verify user's email address
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+          required: true
+          description: Verification token
+      responses:
+        200:
+          description: Account verified successfully
+        400:
+          description: Invalid verification link
+        500:
+          description: Server error
+
+  /auth/forget-password:
+    post:
+      tags:
+        - Authentication
+      summary: Forget Password
+      description: Request a password reset token
       requestBody:
         required: true
         content:
@@ -389,29 +153,809 @@ paths:
             schema:
               type: object
               properties:
-                token:
+                email:
                   type: string
-                  example: 'reset token'
+                  example: johndoe@example.com
+      responses:
+        200:
+          description: Token sent to email
+        400:
+          description: Invalid email or user does not exist
+        500:
+          description: Server error
+
+  /auth/reset-password:
+    put:
+      tags:
+        - Authentication
+      summary: Reset Password
+      description: Reset user password using the reset token
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+          required: true
+          description: Reset token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
                 password:
                   type: string
-                  example: 'newpassword123'
+                  example: NewPassword123
                 confirmPassword:
                   type: string
-                  example: 'newpassword123'
+                  example: NewPassword123
       responses:
-        "200":
+        200:
           description: Password reset successfully
+        400:
+          description: Invalid input or passwords do not match
+        404:
+          description: Invalid token
+
+  /auth/update-password:
+    post:
+      tags:
+        - Authentication
+      summary: Update Password
+      description: Update user password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currentPassword:
+                  type: string
+                  example: CurrentPassword123
+                confirmPassword:
+                  type: string
+                  example: NewPassword123
+                confirmNewPassword:
+                  type: string
+                  example: NewPassword123
+      responses:
+        200:
+          description: Password updated successfully
+        400:
+          description: Invalid input or passwords do not match
+        401:
+          description: Authentication required
+        500:
+          description: Server error
+
+  /auth/validate-otp:
+    post:
+      tags:
+        - Authentication
+      summary: Validate OTP
+      description: Validate OTP sent to user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone:
+                  type: string
+                  example: "1234567890"
+                otp:
+                  type: string
+                  example: "123456"
+      responses:
+        200:
+          description: OTP validated successfully
+        400:
+          description: Invalid OTP
+
+  /auth/me:
+    get:
+      tags:
+        - Authentication
+      summary: Get Current User
+      description: Get details of the logged-in user
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: User details retrieved successfully
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  message:
+                  status:
                     type: string
-                    example: "Password reset successfully"
-        "400":
-          description: Invalid or expired token
+                  user:
+                    $ref: "#/components/schemas/User"
+        401:
+          description: Authentication required
+        500:
+          description: Server error
+
+  /user/profile:
+    get:
+      tags:
+        - User Management
+      summary: Get user profile
+      description: Retrieve the profile information of the logged-in user
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: User profile retrieved successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    $ref: "#/components/schemas/User"
+        401:
+          description: Authentication required
+        404:
+          description: User not found
+        500:
+          description: Server error
+
+    put:
+      tags:
+        - User Management
+      summary: Update user profile
+      description: Update the profile information of the logged-in user
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        200:
+          description: User profile updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    $ref: "#/components/schemas/User"
+        401:
+          description: Authentication required
+        404:
+          description: User not found
+        500:
+          description: Server error
+
+  /properties:
+    get:
+      tags:
+        - Properties
+      summary: Get all properties
+      description: Retrieve a list of all properties
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Properties retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Property"
+        401:
+          description: Authentication required
+        500:
+          description: Server error
+
+    post:
+      tags:
+        - Properties
+      summary: Create a new property
+      description: Add a new property to the listing
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Property"
+      responses:
+        201:
+          description: Property created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Property"
+        401:
+          description: Authentication required
+        403:
+          description: Access forbidden
+        500:
+          description: Server error
+
+  /properties/{id}:
+    get:
+      tags:
+        - Properties
+      summary: Get property details
+      description: Retrieve details of a specific property
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 64b81d6894a45f35f4e5b899
+      responses:
+        200:
+          description: Property details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Property"
+        401:
+          description: Authentication required
+        404:
+          description: Property not found
+        500:
+          description: Server error
+
+    put:
+      tags:
+        - Properties
+      summary: Update property details
+      description: Update the details of an existing property
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 64b81d6894a45f35f4e5b899
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Property"
+      responses:
+        200:
+          description: Property updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Property"
+        401:
+          description: Authentication required
+        403:
+          description: Access forbidden
+        404:
+          description: Property not found
+        500:
+          description: Server error
+
+    delete:
+      tags:
+        - Properties
+      summary: Delete property
+      description: Delete a property from the listing
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 64b81d6894a45f35f4e5b899
+      responses:
+        204:
+          description: Property deleted successfully
+        401:
+          description: Authentication required
+        403:
+          description: Access forbidden
+        404:
+          description: Property not found
+        500:
+          description: Server error
+
+  /admin/users:
+    get:
+      tags:
+        - Admin
+      summary: Get all users
+      description: Retrieve a list of all registered users
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        401:
+          description: Authentication required
+        403:
+          description: Access forbidden
+        500:
+          description: Server error
+
+  /admin/users/{id}:
+    get:
+      tags:
+        - Admin
+      summary: Get user details
+      description: Retrieve details of a specific user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 64b81d6894a45f35f4e5b899
+      responses:
+        200:
+          description: User details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        401:
+          description: Authentication required
+        403:
+          description: Access forbidden
+        404:
+          description: User not found
+        500:
+          description: Server error
+
+    put:
+      tags:
+        - Admin
+      summary: Update user details
+      description: Update the details of a specific user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 64b81d6894a45f35f4e5b899
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        200:
+          description: User details updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        401:
+          description: Authentication required
+        403:
+          description: Access forbidden
+        404:
+          description: User not found
+        500:
+          description: Server error
+
+    delete:
+      tags:
+        - Admin
+      summary: Delete user
+      description: Delete a specific user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 64b81d6894a45f35f4e5b899
+      responses:
+        204:
+          description: User deleted successfully
+        401:
+          description: Authentication required
+        403:
+          description: Access forbidden
+        404:
+          description: User not found
+        500:
+          description: Server error
+
+  /admin/properties:
+    get:
+      tags:
+        - Admin
+      summary: Get all properties
+      description: Retrieve a list of all properties
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Properties retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Property"
+        401:
+          description: Authentication required
+        403:
+          description: Access forbidden
+        500:
+          description: Server error
+
+    post:
+      tags:
+        - Admin
+      summary: Create a new property
+      description: Add a new property to the listing
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Property"
+      responses:
+        201:
+          description: Property created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Property"
+        401:
+          description: Authentication required
+        403:
+          description: Access forbidden
+        500:
+          description: Server error
+
+  /admin/properties/{id}:
+    get:
+      tags:
+        - Admin
+      summary: Get property details
+      description: Retrieve details of a specific property
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 64b81d6894a45f35f4e5b899
+      responses:
+        200:
+          description: Property details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Property"
+        401:
+          description: Authentication required
+        403:
+          description: Access forbidden
+        404:
+          description: Property not found
+        500:
+          description: Server error
+
+    put:
+      tags:
+        - Admin
+      summary: Update property details
+      description: Update the details of an existing property
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 64b81d6894a45f35f4e5b899
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Property"
+      responses:
+        200:
+          description: Property updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Property"
+        401:
+          description: Authentication required
+        403:
+          description: Access forbidden
+        404:
+          description: Property not found
+        500:
+          description: Server error
+
+    delete:
+      tags:
+        - Admin
+      summary: Delete property
+      description: Delete a property from the listing
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 64b81d6894a45f35f4e5b899
+      responses:
+        204:
+          description: Property deleted successfully
+        401:
+          description: Authentication required
+        403:
+          description: Access forbidden
+        404:
+          description: Property not found
+        500:
+          description: Server error
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the user
+          example: John Doe
+        address:
+          type: string
+          description: Address of the user
+          example: "123 Main St"
+        email:
+          type: string
+          description: Email address of the user
+          example: johndoe@example.com
+        phone:
+          type: string
+          description: Phone number of the user
+          example: "1234567890"
+        role:
+          type: string
+          description: Role of the user
+          enum:
+            - user
+            - admin
+            - owner
+          example: user
+        photo:
+          type: string
+          description: Profile photo of the user
+          example: "placeholder.png"
+        passwordChangedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the user last changed their password
+          example: "2023-07-28T14:00:00Z"
+        passwordResetToken:
+          type: string
+          description: Token used for password reset
+          example: "resetTokenExample123"
+        passwordResetExpires:
+          type: string
+          format: date-time
+          description: Expiration time for the password reset token
+          example: "2023-07-28T14:00:00Z"
+        active:
+          type: boolean
+          description: Indicates if the user account is active
+          example: true
+        isVerified:
+          type: boolean
+          description: Indicates if the user's email is verified
+          example: false
+        verificationToken:
+          type: string
+          description: Token used for email verification
+          example: "verificationTokenExample123"
+        otp:
+          type: string
+          description: OTP (One Time Password) for phone verification
+          example: "123456"
+
+    Property:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the property listing
+          example: "Spacious 2 BHK Apartment"
+        description:
+          type: string
+          description: Description of the property
+          example: "A spacious and well-furnished 2 BHK apartment located in downtown."
+        address:
+          type: object
+          properties:
+            apartment:
+              type: string
+              description: Apartment name or number
+              example: "Apartment 101"
+            area:
+              type: string
+              description: Area name
+              example: "Downtown"
+            flatOrRoom_no:
+              type: string
+              description: Flat or room number
+              example: "Flat 5A"
+            landmark:
+              type: string
+              description: Nearby landmark
+              example: "Near Central Park"
+            pincode:
+              type: string
+              description: Postal code
+              example: "123456"
+            sector:
+              type: string
+              description: Sector or block name
+              example: "Sector 17"
+            state:
+              type: string
+              description: State name
+              example: "New York"
+            street:
+              type: string
+              description: Street name
+              example: "5th Avenue"
+            townCity:
+              type: string
+              description: Town or city name
+              example: "New York City"
+        type:
+          type: string
+          description: Type of property
+          enum:
+            - Room/Flat
+            - PG
+          example: "Room/Flat"
+        accommodationType:
+          type: string
+          description: Type of accommodation
+          enum:
+            - Girls
+            - Boys
+            - Both
+          example: "Both"
+        bhk:
+          type: number
+          description: Number of bedrooms, halls, and kitchens
+          example: 2
+        area:
+          type: string
+          description: Area of the property in square feet
+          example: "1200 sq.ft."
+        price:
+          type: number
+          description: Rental price of the property
+          example: 1500
+        amenities:
+          type: array
+          items:
+            type: string
+          description: List of amenities available at the property
+          example: ["Wi-Fi", "Air Conditioning", "Gym"]
+        images:
+          type: array
+          items:
+            type: string
+          description: List of image URLs
+          example: ["image1.jpg", "image2.jpg"]
+        VRimages:
+          type: array
+          items:
+            type: string
+          description: List of VR image URLs
+          example: ["vrimage1.jpg", "vrimage2.jpg"]
+        popular:
+          type: boolean
+          description: Indicates if the property is popular
+          example: true
+        occupancy:
+          type: array
+          items:
+            type: string
+          description: List of occupancy options
+          example: ["Single", "Double"]
+        services:
+          type: array
+          items:
+            type: string
+          description: List of services provided at the property
+          example: ["Laundry", "Housekeeping"]
+        menu:
+          type: array
+          items:
+            type: object
+            properties:
+              day:
+                type: string
+                description: Day of the week
+                example: "Monday"
+              meals:
+                type: object
+                properties:
+                  breakfast:
+                    type: array
+                    items:
+                      type: string
+                    description: List of breakfast items
+                    example: ["Pancakes", "Coffee"]
+                  lunch:
+                    type: array
+                    items:
+                      type: string
+                    description: List of lunch items
+                    example: ["Sandwich", "Salad"]
+                  evening:
+                    type: array
+                    items:
+                      type: string
+                    description: List of evening snack items
+                    example: ["Cookies", "Tea"]
+                  dinner:
+                    type: array
+                    items:
+                      type: string
+                    description: List of dinner items
+                    example: ["Pizza", "Pasta"]
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
