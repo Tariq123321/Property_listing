@@ -15,7 +15,6 @@ const userSchema = new mongoose.Schema({
     },
     address:{
       type:String,
-      required: true,
     },
     password:{
       type:String,
@@ -55,7 +54,8 @@ const userSchema = new mongoose.Schema({
           return /\d{10}/.test(v); 
         },
         message: props => `${props.value} is not a valid 10 digit number!`
-      }
+      },
+      required: true
     },
     photo:{
       type:String,

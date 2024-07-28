@@ -122,7 +122,7 @@ const signin = async (req, res) => {
 
     createSendToken(user, 201, res, req);
   } catch (error) {
-    res.status(500).send({ message: "Server error" });
+    res.status(500).send({ message: `Server error: ${error.message}` });
   }
 };
 

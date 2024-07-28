@@ -4,7 +4,7 @@ require('dotenv').config();
 const user = {
   id: '123',
   username: 'Tariq', 
-  role: 'admin'
+  role: 'owner'
 };
 
 // Generate a token
